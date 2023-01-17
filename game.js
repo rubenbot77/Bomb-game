@@ -162,7 +162,7 @@ function gameWin() {
    const heartsArray = Array(lives).fill(emojis['HEART']);
    console.log(heartsArray);
 
-   spanLives.inneHTML = "HOLA";
+   spanLives.innerText = heartsArray.join('');
  }
 function moveByKeys(event){
    if (event.keyCode == 38){
