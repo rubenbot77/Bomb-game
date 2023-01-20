@@ -9,6 +9,16 @@
 </head>
 <body>
     <div class="game-container">
+        <div id="back" class="inactive">
+        </div>
+        <div id="alert-container" class="inactive">
+            <p>You have passed all the levels. Congratulations!!!  <br> <br> <br>🏆🏆🏆</br></p>
+            <button class="game-reset">RESET GAME</button>
+        </div>
+        <div id="alert-container-lose" class="inactive">
+            <p>You lost all your lives.  <br>GAME OVER <br> <br>❌❌❌</br></p>
+            <button class="game-reset2">RESET GAME</button>
+        </div>
         <canvas id="game"></canvas>
         <div class="btns">
            <button id="up">Up</button> 
@@ -19,6 +29,11 @@
 
         <div class="messages">
             <p>Lives: <span id="lives"></span></p>
+            <p>Time: ⏰<span id="time"></span></p>
+            <p>Record: 🏁<span id="record-player"></span></p>
+        </div>
+        <div class="record-container">
+        <span id="record-messages" class="inactive"></span>
         </div>
     </div>
     <script src="./maps.js"></script>

@@ -5,10 +5,23 @@ const btnLeft = document.querySelector('#left')
 const btnRight = document.querySelector('#right')
 const btnDown = document.querySelector('#down')
 const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time')
+const spanRecord = document.querySelector('#record-player')
+const alertGame = document.querySelector('#alert-container');
+const alertLose = document.querySelector('#alert-container-lose')
+const background = document.querySelector('#back') 
+const resetButton = document.querySelector('.game-reset')
+const resetButtonLose = document.querySelector('.game-reset2')
+const recordStatus = document.querySelector('#record-messages')
 let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
+
+let timeInterval;
+let timePlayer;
+let timeStar;
+
 const playerPosition = {
    x: undefined,
    y: undefined,
@@ -31,25 +44,33 @@ btnUp.addEventListener('click', moveUp);
 btnLeft.addEventListener('click', moveLeft);  
 btnRight.addEventListener('click', moveRight);  
 btnDown.addEventListener('click', moveDown);
+resetButton.addEventListener('click', reload)
+resetButtonLose.addEventListener('click', reload)
 
 
+function reload() {
+ location.reload()
+}
 
 function setCanvasSize(){
     if (window.innerHeight > window.innerWidth){
-        canvasSize = window.innerWidth * 0.8;
+        canvasSize = window.innerWidth * 0.7;
      } else {
-        canvasSize = window.innerHeight * 0.8;
+        canvasSize = window.innerHeight * 0.7;
      }
-    
+     canvasSize = Number(canvasSize.toFixed(0));
      canvas.setAttribute('width', canvasSize);
      canvas.setAttribute('height', canvasSize);
 
     elementsSize = canvasSize / 10;
+    playerPosition.y = undefined;
+    playerPosition.x = undefined;
 
      startGame();
 }
 
 function startGame() {
+
  console.log({canvasSize, elementsSize});  
     
  game.font = elementsSize + 'px Verdana';
@@ -59,6 +80,11 @@ function startGame() {
  if (!map) {
    gameWin();
    return;
+ }
+ if (!timeStar) {
+    timeStar = Date.now();
+    timeInterval = setInterval(showTime, 100);
+    showRecord();
  }
  const mapRows = map.trim().split('\n');
  const mapRowCols = mapRows.map(row => row.trim().split(''));
@@ -109,6 +135,7 @@ movePlayer();
 //   game.fillText ('Platzi', 100, 100);
 }
 function movePlayer() {
+   
    const giftCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
    const giftCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3); 
    const giftCollicion = giftCollisionX && giftCollisionY;
@@ -146,8 +173,9 @@ function movePlayer() {
   if (lives <= 0) {
     level = 0;
     lives = 3;
-    posAnt.x = undefined;
-    posAnt.y = undefined;
+   clearInterval(timeInterval);
+    alertLose.classList.remove('inactive')
+    background.classList.remove('inactive')
   }
   
   playerPosition.x = undefined;
@@ -157,12 +185,38 @@ function movePlayer() {
  
 function gameWin() {
    console.log('¡Terminaste el juego!');
+   clearInterval(timeInterval);
+   
+  const recordTime = localStorage.getItem('record');
+  const playerTime = Date.now() - timeStar;
+  background.classList.remove('inactive')
+  alertGame.classList.remove('inactive')
+  recordStatus.classList.remove('inactive')
+   
+   if (recordTime) {
+      if (recordTime >= playerTime) {
+        localStorage.setItem('record', playerTime);
+        recordStatus.innerHTML = 'SUPERASTE EL RECORD ✅';
+      } else {
+        recordStatus.innerHTML = 'lo siento, no superaste el record 🚫';
+      }
+    } else {
+      localStorage.setItem('record', playerTime);
+      recordStatus.innerHTML = 'Primera vez? Muy bien, pero ahora trata de superar tu tiempo';
+    }
+    console.log({recordTime, playerTime});
  }
  function showLives () {
    const heartsArray = Array(lives).fill(emojis['HEART']);
    console.log(heartsArray);
 
    spanLives.innerText = heartsArray.join('');
+ }
+ function showTime (){
+   spanTime.innerHTML = Date.now() - timeStar; 
+ }
+ function showRecord() {
+   spanRecord.innerHTML = localStorage.getItem('record');
  }
 function moveByKeys(event){
    if (event.keyCode == 38){
