@@ -58,7 +58,7 @@ function setCanvasSize(){
      } else {
         canvasSize = window.innerHeight * 0.7;
      }
-     canvasSize = Number(canvasSize.toFixed(0));
+     canvasSize = Number(canvasSize.toFixed(5));
      canvas.setAttribute('width', canvasSize);
      canvas.setAttribute('height', canvasSize);
 
