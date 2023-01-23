@@ -58,7 +58,7 @@ function setCanvasSize(){
      } else {
         canvasSize = window.innerHeight * 0.7;
      }
-     canvasSize = Number(canvasSize.toFixed(5));
+     canvasSize = Number(canvasSize.toFixed(0));
      canvas.setAttribute('width', canvasSize);
      canvas.setAttribute('height', canvasSize);
 
@@ -67,11 +67,16 @@ function setCanvasSize(){
     playerPosition.x = undefined;
 
      startGame();
+     console.log(canvasSize, playerPosition.x, playerPosition.y);
 }
 
 function startGame() {
 
+ 
  console.log({canvasSize, elementsSize});  
+ canvasSize = Number(canvasSize.toFixed(0));
+ elementsSize = Number(elementsSize.toFixed(0));
+
     
  game.font = elementsSize + 'px Verdana';
  game.textAlign = 'end';
@@ -135,9 +140,10 @@ movePlayer();
 //   game.fillText ('Platzi', 100, 100);
 }
 function movePlayer() {
+   console.log(canvasSize, playerPosition.x, playerPosition.y);
    
-   const giftCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
-   const giftCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3); 
+   const giftCollisionX = playerPosition.x.toFixed(0) == giftPosition.x.toFixed(0);
+   const giftCollisionY = playerPosition.y.toFixed(0) == giftPosition.y.toFixed(0); 
    const giftCollicion = giftCollisionX && giftCollisionY;
    if (giftCollicion) {
     posAnt.x = undefined;
@@ -145,13 +151,13 @@ function movePlayer() {
     levelWin()
    }
   const bombCollision = bombPositions.find(bomb => {
-   const bombCollisionX = bomb.x.toFixed(3) == playerPosition.x.toFixed(3);
-   const bombCollisionY = bomb.y.toFixed(3) == playerPosition.y.toFixed(3);
+   const bombCollisionX = bomb.x.toFixed(0) == playerPosition.x.toFixed(0);
+   const bombCollisionY = bomb.y.toFixed(0) == playerPosition.y.toFixed(0);
    return bombCollisionX && bombCollisionY;
   });
   if (bombCollision) {
-     posAnt.y = bombCollision.y.toFixed(3);
-     posAnt.x = bombCollision.x.toFixed(3);
+     posAnt.y = bombCollision.y.toFixed(0);
+     posAnt.x = bombCollision.x.toFixed(0);
      console.log(posAnt);
      levelLose();
   }
